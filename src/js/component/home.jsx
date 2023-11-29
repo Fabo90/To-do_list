@@ -1,14 +1,30 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 
 const Home = () => {
 	const [inputValue, setImputValue] = useState("");
 	const [list, setList] = useState([]);
 	const [style, setStyle] = useState({display: 'none'});
+
+  
+	async function api () {
+		const response = await fetch("https://playground.4geeks.com/apis/fake/todos/user/fabian");
+		const json = await response.json()
+		console.log(json);
+	}
+
+
+  useEffect(() => {
+	api()
+  }, [])
+
+
+
+
 	return (
 		<div className="small-middle-container">
 			<h1 className="text-center text-secondary display-5">TO-DO LIST</h1>
-			<ul class="list-group">
+			<ul className="list-group">
 				<input 
 				type="text" 
 				className="form-control" 
