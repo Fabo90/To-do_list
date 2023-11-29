@@ -9,9 +9,27 @@ const Home = () => {
   
 	async function api () {
 		const response = await fetch("https://playground.4geeks.com/apis/fake/todos/user/fabian");
-		const json = await response.json()
+		const json = await response.json();
 		console.log(json);
-	}
+		setList(json);
+	};
+
+	async function add () {
+		const upTask = [{
+			label: inputValue,
+			done: false
+		  }];
+
+		const response = await fetch("https://playground.4geeks.com/apis/fake/todos/user/fabian", {
+			method: 'PUT',
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify(upTask)
+		});
+		const json = await response.json();
+		console.log(json);
+	};
 
 
   useEffect(() => {
@@ -33,7 +51,7 @@ const Home = () => {
 				value={inputValue}
 				onKeyDown={(e) => {
 					if (e.key === "Enter" && inputValue != "") {
-						setList(list.concat(inputValue));
+						add();
 						setImputValue("");
 					} else if (e.key === "Enter" && inputValue == "") {
 						alert ("Please write something!");
@@ -42,14 +60,15 @@ const Home = () => {
 				></input>
 				<div>
 					{list.map((ele, index) => (
-						<li className="form-control"
+						<li key={index} 
+							className="form-control"
 							onMouseOver={() => {
                      			setStyle({display: 'block'});
                  			}}
                  			onMouseLeave={() => {
                      			setStyle({display: 'none'});
                 			}}>
-							{ele} 
+							{ele.label} 
 							<button className="btn-close float-end"
 									onClick={() =>
 										setList(list.filter((i, ind) => index != ind))}
