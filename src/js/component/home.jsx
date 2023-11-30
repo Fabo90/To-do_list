@@ -8,27 +8,48 @@ const Home = () => {
 
   
 	async function api () {
-		const response = await fetch("https://playground.4geeks.com/apis/fake/todos/user/fabian");
-		const json = await response.json();
-		console.log(json);
-		setList(json);
+		try {
+			const response = await fetch("https://playground.4geeks.com/apis/fake/todos/user/fabian");
+			const json = await response.json();
+
+			if (!response.ok) {
+				console.log(data.description);
+				return;
+			}
+
+			console.log(json);
+			setList(json);
+		} catch(error) {
+			console.log(error);
+		}
 	};
 
 	async function add () {
-		const upTask = [{
+		list.push({
 			label: inputValue,
 			done: false
-		  }];
+		  });
+		
+		try {
+			const response = await fetch("https://playground.4geeks.com/apis/fake/todos/user/fabian", {
+				method: 'PUT',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify(list)
+			});
+			const json = await response.json();
 
-		const response = await fetch("https://playground.4geeks.com/apis/fake/todos/user/fabian", {
-			method: 'PUT',
-			headers: {
-				'Content-Type': 'application/json'
-			},
-			body: JSON.stringify(upTask)
-		});
-		const json = await response.json();
-		console.log(json);
+			if (!response.ok) {
+				console.log(data.description);
+				return;
+			}
+
+			console.log(json);
+			
+		} catch (error) {
+			console.log(error);
+		}
 	};
 
 
